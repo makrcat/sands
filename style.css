@@ -5,17 +5,50 @@ html, body {
   padding: 0;
   background-color: black;
 }
-#canvas-container {
+
+.canvas-container {
   position: relative;
-  display: inline-block; /* or block */
-  margin-top: 20px; /* space for jar top */
+  display: inline-block;
+  margin-top: 20px; 
 }
 
 div {
   box-sizing: border-box;
 }
+.side {
+    position: fixed;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 20px; 
+    bottom: 0; 
+    right: 0;
+    width: 300px;
+    padding-top: 40px;
 
-#canvas-container::before {
+}
+
+.canvas-container::before {
+  content: "";
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid lightgray;
+  border-radius: 60px 60px 0 0;
+  box-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.6);
+  z-index: 10;
+}
+
+.mini {
+  position: relative;
+  display: inline-block; 
+  margin-top: 10px; 
+}
+
+.mini::before {
+
   content: "";
   position: absolute;
   top: -16px;
@@ -23,7 +56,7 @@ div {
   transform: translateX(-50%);
   width: 20px;
   height: 10px;
-  background: rgb(76, 76, 76);
+  background: rgba(255, 255, 255, 0.2);
   border: 1px solid lightgray;
   border-radius: 60px 60px 0 0;
   box-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.6);
@@ -34,8 +67,7 @@ div {
 
 #canvas {
   display: block;
-  background: rgb(76, 76, 76);
-  border-top: 2px solid red;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 
