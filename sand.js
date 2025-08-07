@@ -214,6 +214,8 @@ export function exportJar() {
     }
   }
 
+  grid = make2DArray(cols, rows);
+
   return hslGrid;
 }
 
@@ -265,6 +267,9 @@ export async function save(x, y) {
   } catch (error) {
     console.error("❌ Error saving grid:", error);
   }
+
+
+  load();
 }
 
 
