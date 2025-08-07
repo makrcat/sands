@@ -178,7 +178,10 @@ function logic() {
             if (eraser) {
               grid[col][row] = null; // or 0, or undefined depending on your system
             } else {
-              grid[col][row] = new Particle(0, 0, hueValue);
+              if (!grid[col][row]) {
+                
+                grid[col][row] = new Particle(0, 0, hueValue);
+              }
             }
           }
         }
