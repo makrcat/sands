@@ -4,6 +4,72 @@ import { Line } from "./game_engine.js";
 import { startGame } from "./game_utils.js";
 
 
+////eeeeverythign is fine
+
+let eraser = false;
+
+const eraserCheckbox = document.getElementById("eraser");
+// typescript AGUHG
+
+eraserCheckbox.addEventListener("change", () => {
+  eraser = eraserCheckbox.checked;
+  console.log("Eraser is now:", eraser ? "ON" : "OFF");
+});
+
+let brushSize = 4; 
+
+const brushSizeInput = document.getElementById("brush-size-input");
+
+brushSize = parseInt(brushSizeInput.value, 10);
+
+brushSizeInput.addEventListener("input", () => {
+  brushSize = parseInt(brushSizeInput.value, 10);
+});
+
+
+
+
+/// everything is fine guys
+const hueSlider = document.getElementById("hue-slider");
+const hueValueEl = document.getElementById("hue-value");
+const huePreview = document.getElementById("hue-preview");
+
+let hueValue = parseInt(hueSlider.value, 10); 
+
+// Create style tag for dynamic thumb color
+const styleTag = document.createElement('style');
+styleTag.id = 'hue-thumb-style';
+document.head.appendChild(styleTag);
+
+
+function updateHueUI(hue) {
+  if (hueValueEl) hueValueEl.textContent = hue;
+  if (huePreview) huePreview.style.backgroundColor = `hsla(${hue}, 100%, 50%, 50%)`;
+
+  // Update thumb color (Chrome/WebKit)
+  hueSlider.style.setProperty('--thumb-color', `hsla(${hue}, 100%, 50%, 50%)`);
+
+  // For Firefox and Safari (fallback)
+  const thumbStyle = `
+    #hue-slider::-webkit-slider-thumb {
+      background-color: hsl(${hue}, 100%, 50%);
+    }
+    #hue-slider::-moz-range-thumb {
+      background-color: hsl(${hue}, 100%, 50%);
+    }
+  `;
+  styleTag.textContent = thumbStyle;
+  hueValue = parseInt(hueSlider.value, 10); 
+}
+
+hueSlider.addEventListener("input", () => {
+  const hue = parseInt(hueSlider.value, 10);
+  updateHueUI(hue);
+});
+
+// Initial update
+updateHueUI(parseInt(hueSlider.value, 10));
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -67,7 +133,6 @@ const rows = Math.floor(canvas.clientHeight / cellw);
 const cols = Math.floor(canvas.clientWidth / cellw);
 
 const gravity = 0.1;
-let hueValue = 200;
 
 class Particle {
   constructor(vx, vy, hue) {
@@ -101,24 +166,26 @@ function logic() {
     let mouseCol = Math.floor(clientX / cellw);
     let mouseRow = Math.floor(clientY / cellw);
 
-    let matrix = 1;
+    let matrix = brushSize;
     let extent = Math.floor(matrix / 2);
+    
     for (let i = -extent; i <= extent; i++) {
       for (let j = -extent; j <= extent; j++) {
         if (Math.random() < 0.75) {
           let col = mouseCol + i;
           let row = mouseRow + j;
           if (withinCols(col) && withinRows(row)) {
-            grid[col][row] = new Particle(0, 0, hueValue);
+            if (eraser) {
+              grid[col][row] = null; // or 0, or undefined depending on your system
+            } else {
+              grid[col][row] = new Particle(0, 0, hueValue);
+            }
           }
         }
       }
     }
   }
 
-  // Slowly change color hue
-  hueValue += 0.5;
-  if (hueValue > 360) hueValue = 1;
 
   // Draw all particles
   for (let i = 0; i < cols; i++) {
