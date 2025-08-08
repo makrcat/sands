@@ -258,6 +258,8 @@ startGame();
 
 
 export function exportJar() {
+  let color = 0;
+
   const hslGrid = make2DArray(cols, rows);
 
   // Regex to match hsl or hsla colors like:
@@ -274,6 +276,10 @@ export function exportJar() {
           const s = parseFloat(match[3]);
           const l = parseFloat(match[4]);
           hslGrid[i][j] = [h, s, l];
+
+          color += 1;
+
+
         } else {
           console.warn(`Invalid color format at col ${i}, row ${j}:`, p.color);
           hslGrid[i][j] = null;
@@ -284,8 +290,12 @@ export function exportJar() {
     }
   }
 
-  grid = make2DArray(cols, rows);
+  if (color < 10) {
+    alert("hmm.. add some more color");
+    return null;
+  }
 
+  grid = make2DArray(cols, rows);
   return hslGrid;
 }
 
@@ -322,6 +332,10 @@ export async function save(x, y) {
     }
 
     const grid = exportJar();
+
+    if (grid == null) {
+      return; // not enough color
+    }
     const gridString = JSON.stringify(grid);
 
     const gridRef = doc(db, "sands", String(num));

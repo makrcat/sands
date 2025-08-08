@@ -47,19 +47,26 @@
 
 
 
-            Click to drop some sand.
+            ← Click inside the jar to add sand 
+            
+
+            <div style="width: 200px">
 
             <button onclick=done()>I'm done</button>
+            Clicking this will add your jar to the gallery!
+            </div>
 
         </div>
 
     </div>
 
-    <button onclick=load()>load</button>
+    
     <div id="jars" style=" display: flex; flex-wrap: wrap; 
     margin-top: 20px; border: 1px solid white; 
      margin: 10px; min-height: 60px; 
      color: white; padding: 10px; gap: 10px;">jars will load in here :)</div>
+
+     <button onclick=load()>pre load the gallery</button>
 
     <script src="sand.js" type="module"></script>
 
